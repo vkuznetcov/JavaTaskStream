@@ -1,5 +1,6 @@
 package utils;
 
+import lombok.var;
 import models.Car;
 import models.CarMaker;
 
@@ -58,9 +59,18 @@ public class CSVReader {
         return result;
     }
 
-    private static void printResult(List<Car> data){
+    private static <T> void printResult(List<T> data){
         data.forEach(System.out::println);
         System.out.println("\n\n\n\n\n");
+    }
+
+    private static List<CarMaker> mapSetToList(Map<CarMaker, List<Car>> data){
+        Set<Map.Entry<CarMaker, List<Car>>> set = data.entrySet();
+        List<CarMaker> result = new ArrayList<>();
+        for(Map.Entry<CarMaker, List<Car>> entry : set){
+            result.add(entry.getKey());
+        }
+        return result;
     }
 
     private static <T> void printResult(Map<T, List<Car>> data) {
@@ -74,6 +84,9 @@ public class CSVReader {
     public static void main(String[] args) throws IOException {
         printResult(parseCarData());
         printResult(groupCarsByColor(parseCarData()));
+        var a = mapSetToList(groupCarsByCarMaker(parseCarData())).stream().map(String::valueOf).collect(Collectors.joining(DELIMITER));
+        System.out.println(Arrays.toString(a.split(DELIMITER)) + "\n\n\n\n\n");
         printResult(sortMakers(groupCarsByCarMaker(parseCarData())));
     }
+
 }
