@@ -24,7 +24,9 @@ public class CSVReader {
             String carModel = carInfo[0];
 
             String makerName = carInfo[1];
-            CarMaker carMaker = CarMaker.builder().name(makerName).build();
+            CarMaker carMaker = CarMaker.builder()
+                                .name(makerName)
+                                .build();
 
             int carYear = Integer.parseInt(carInfo[2]);
             String carColor = carInfo[3];
