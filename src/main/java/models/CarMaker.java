@@ -5,7 +5,6 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @Builder
-@ToString
 public class CarMaker implements Comparable<CarMaker>{
     private String name;
 
@@ -13,5 +12,10 @@ public class CarMaker implements Comparable<CarMaker>{
     @Override
     public int compareTo(CarMaker o) {
         return this.name.compareTo(o.getName());
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
