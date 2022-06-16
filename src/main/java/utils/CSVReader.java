@@ -25,8 +25,8 @@ public class CSVReader {
 
             String makerName = carInfo[1];
             CarMaker carMaker = CarMaker.builder()
-                                .name(makerName)
-                                .build();
+                    .name(makerName)
+                    .build();
 
             int carYear = Integer.parseInt(carInfo[2]);
             String carColor = carInfo[3];
@@ -42,10 +42,11 @@ public class CSVReader {
     }
 
     private static List<String> getData() throws IOException {
-        return Files.lines(Paths.get(DATA_SOURCE)).skip(1).collect(Collectors.toList());
+        return Files.lines(Paths.get(DATA_SOURCE)).skip(1).filter(str -> (!"".equals(str.split(DELIMITER)[1])))
+                .collect(Collectors.toList());
     }
 
-    private static <T> Map<T, List<Car>> groupCars(Function<Car, T> function, List<Car> cars){
+    private static <T> Map<T, List<Car>> groupCars(Function<Car, T> function, List<Car> cars) {
         return cars.stream().collect(Collectors.groupingBy(function));
     }
 
@@ -53,8 +54,7 @@ public class CSVReader {
         Map<CarMaker, List<Car>> handledMap = new HashMap<>(group);
 
         handledMap.entrySet().removeIf(carMakerListEntry ->
-                (carMakerListEntry.getValue().size() < MINIMUM_CARS_PER_MAKER
-                || "".equals(carMakerListEntry.getKey().getName())));
+                (carMakerListEntry.getValue().size() < MINIMUM_CARS_PER_MAKER));
 
         Map<CarMaker, List<Car>> result = new TreeMap<>();
         SortedSet<CarMaker> keys = new TreeSet<>(handledMap.keySet());
@@ -93,7 +93,7 @@ public class CSVReader {
 
         printResult(groupCars(Car::getColor, parsedData));
 
-        String makersList = mapSetToList(groupCars((Car::getMaker),parsedData)).stream().map(String::valueOf)
+        String makersList = mapSetToList(groupCars((Car::getMaker), parsedData)).stream().map(String::valueOf)
                 .collect(Collectors.joining(DELIMITER));
         System.out.println(Arrays.toString(makersList.split(DELIMITER)) + RECORD_SPACE);
 
