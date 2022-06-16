@@ -42,7 +42,7 @@ public class CSVReader {
     }
 
     private static List<String> getData() throws IOException {
-        return Files.lines(Paths.get(DATA_SOURCE)).collect(Collectors.toList()).stream().skip(1).collect(Collectors.toList());
+        return Files.lines(Paths.get(DATA_SOURCE)).skip(1).collect(Collectors.toList());
     }
 
     private static <T> Map<T, List<Car>> groupCars(Function<Car, T> function, List<Car> cars){
